@@ -1,0 +1,66 @@
+plugins {
+    alias(libs.plugins.android.application)
+}
+
+android {
+    namespace 'com.example.myapplication'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "com.example.myapplication"
+        minSdk 24
+        targetSdk 35
+        versionCode 1
+        versionName "1.0"
+
+        ndk {
+            // 指定支持的ABI类型
+            //noinspection ChromeOsAbiSupport
+            abiFilters 'armeabi-v7a','arm64-v8a'
+        }
+
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        // 指定编译选项
+//        cppOptions {
+//            cppFlags "-Oz -finline-functions"
+//        }
+//        // 指定链接器选项
+//        linkerOptions {
+//            additional_ldflags "-Wl,-O3"
+//        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    externalNativeBuild {
+        cmake {
+            path file('src/main/cpp/CMakeLists.txt')
+            version '3.22.1'
+        }
+    }
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+dependencies {
+
+    implementation libs.appcompat
+    implementation libs.material
+    implementation libs.constraintlayout
+    testImplementation libs.junit
+    androidTestImplementation libs.ext.junit
+    androidTestImplementation libs.espresso.core
+
+    // https://mvnrepository.com/artifact/com.google.android.play/integrity
+    implementation 'com.google.android.play:integrity:1.5.0'
+}
